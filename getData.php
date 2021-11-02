@@ -1,6 +1,6 @@
 <?php
   $host_name = "localhost";
-  $database = "***"; // Change your database name
+  $database = "***";          // Change your database name
   $username = "***";          // Your database user id
   $password = "***";          // Your password
 
