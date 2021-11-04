@@ -56,9 +56,16 @@
         data.addColumn('string', 'Bewertung');
         data.addColumn('number', 'bewertung');
 
+        // get todays date
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
         // count ratings for each rating in jsondata
         var ratings = {};
         for (var i = 0; i < jsonData.length; i++) {
+          if (jsonData[i].datum !== date) {
+            continue;
+          }
           var rating = jsonData[i].bewertung;
           if (ratings[rating] == undefined) {
             ratings[rating] = 1;
