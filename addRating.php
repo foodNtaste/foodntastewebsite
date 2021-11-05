@@ -28,6 +28,7 @@
     if (!$result) {
         die("Database query failed.");
     }
+    print($default);
     // close connection
     mysqli_close($connection);
 ?>
