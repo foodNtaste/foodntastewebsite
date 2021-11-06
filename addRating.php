@@ -18,6 +18,11 @@
 
     // get data from GET request
     $rating = $_GET['rating'];
+    // check if rating is not gut, mittel or schlecht
+    if ($rating != "gut" && $rating != "mittel" && $rating != "schlecht") {
+        echo "Error: Invalid rating";
+        exit;
+    }
     // insert rating into database
     // get current date
     $date = date('Y-m-d');
