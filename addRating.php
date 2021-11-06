@@ -16,8 +16,8 @@
         exit;
     }
 
-    // get data from post request
-    $rating = $_POST['rating'];
+    // get data from GET request
+    $rating = $_GET['rating'];
     // insert rating into database
     // get current date
     $date = date('Y-m-d');
@@ -28,7 +28,7 @@
     if (!$result) {
         die("Database query failed.");
     }
-    print($default);
+    print($result);
     // close connection
     mysqli_close($connection);
 ?>
