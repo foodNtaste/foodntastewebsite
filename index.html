@@ -9,9 +9,14 @@
   <meta property="og:title" content="foodNtaste" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://foodntaste.senfauge.de/" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <title>foodNtaste | Essensbewertung</title>
   <style>
-    body {margin: 0;}
+    html {overflow-y: scroll;}
+
+    body {
+      margin: 0;
+    }
 
     h1 {
       color: #ffd700;
@@ -39,41 +44,25 @@
       padding-left: 33%;
     }
 
-    ul.topnav {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: #333;
-      position: -webkit-sticky; /* Safari */
-      position: sticky;
-      top: 0;
+    #chart_div_current_day {
+      padding-left: 33%;
     }
 
-    ul.topnav li {float: left;}
-
-    ul.topnav li a {
-      display: block;
-      color: white;
+    .text-center {
       text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-    }
-
-    ul.topnav li a:hover:not(.active) {background-color: #111;}
-
-    ul.topnav li a.active {background-color: #04AA6D;}
-
-    ul.topnav li.right {float: right;}
-
-    @media screen and (max-width: 600px) {
-      ul.topnav li.right, 
-      ul.topnav li {float: none;}
     }
   </style>
-  <!--Load the AJAX API-->
+  <!--Load API's -->
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2SKXSRNCX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-P2SKXSRNCX');
+  </script>
   <script>
     // check date
     var numDaysBetween = function(d1, d2) {
@@ -98,34 +87,49 @@
         url: "getData.php",
         dataType: "json",
       }).done(function (jsonData) {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Bewertung');
-        data.addColumn('number', 'bewertung');
+        var data_30_days = new google.visualization.DataTable();
+        var data_today = new google.visualization.DataTable();
+        data_30_days.addColumn('string', 'Bewertung');
+        data_30_days.addColumn('number', 'bewertung');
+        data_today.addColumn('string', 'Bewertung');
+        data_today.addColumn('number', 'bewertung');
 
         // get todays date
         var today = new Date();
         var date = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
-        // count ratings for each rating in jsondata
-        var ratings = {};
+        // count ratings for each rating in jsondata if date is in the last 30 days add it to raintgs1 if its today add it to raitings2
+        var ratings1 = {};
+        var ratings2 = {};
         for (var i = 0; i < jsonData.length; i++) {
           if (numDaysBetween(convertDate(jsonData[i].datum), convertDate(date)) > 30) {
             continue;
           }
           var rating = jsonData[i].bewertung;
-          if (ratings[rating] == undefined) {
-            ratings[rating] = 1;
+          if (ratings1[rating] == undefined) {
+            ratings1[rating] = 1;
           } else {
-            ratings[rating]++;
+            ratings1[rating]++;
+          }
+          if (jsonData[i].datum == date) {
+            if (ratings2[rating] == undefined) {
+              ratings2[rating] = 1;
+            } else {
+              ratings2[rating]++;
+            }
           }
         }
 
         // add ratings to data
-        for (var rating in ratings) {
-          data.addRow([rating, ratings[rating]]);
+        for (var rating in ratings1) {
+          data_30_days.addRow([rating, ratings1[rating]]);
+        }
+        for (var rating in ratings2) {
+          data_today.addRow([rating, ratings2[rating]]);
         }
 
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div_30_days'));
+        var chart_30_days = new google.visualization.PieChart(document.getElementById('chart_div_30_days'));
+        var chart_today = new google.visualization.PieChart(document.getElementById('chart_div_current_day'));
         var options = {
           title: 'Essensbewertung',
           backgroundColor: '#3b4d61',
@@ -134,7 +138,8 @@
           height: 600,
           pieSliceTextStyle: { color: 'black' }
         };
-        chart.draw(data, options);
+        chart_30_days.draw(data_30_days, options);
+        chart_today.draw(data_today, options);
       }).fail(function (jq, text, err) {
         console.log(text + ' - ' + err);
       });
@@ -144,21 +149,17 @@
 </head>
 
 <body style="background-color: #3b4d61;">
-  <ul class="topnav">
-    <li><a href="#chart_div_30_days">Bewertung der letzten 30 Tage</a></li>
-    <li><a href="#">Bewertung von heute</a></li>
-    <li><a href="#">Eigene Bewertung hinzufügen</a></li>
-  </ul>
   <h1>Essensbewertung</h1>
-  <h2>Bewertungen der letzten 30 Tage</h2>
-  <div id="chart_div_30_days"></div>
+  <h2 data-aos="fade-up" data-aos-offset="200">Bewertungen der letzten 30 Tage</h2>
+  <div data-aos="fade-up" data-aos-offset="200" id="chart_div_30_days"></div>
+  <h2 data-aos="fade-up" data-aos-offset="200">Bewertung von heute</h2>
+  <div data-aos="fade-up" data-aos-offset="200" id="chart_div_current_day"></div>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
 </body>
-<!--
 <footer>
-  <p>
-    <a href="impressum.html">Impressum</a>
-    <a href="datenschutz.html">Datenschutz</a>
-  </p>
+  <p class="text-center">Copyright &copy; foodNtaste | Version 0.6</p>
 </footer>
--->
 </html>
