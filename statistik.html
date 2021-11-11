@@ -1,0 +1,71 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>foodNtaste Statistiken</title>
+    <meta name="description" content="Statistiken welche aus Projektmaterial generiert werden.">
+    <meta name="author" content="Luiggi33">
+
+    <meta property="og:title" content="foodNtaste Statistiken">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://foodntaste.senfauge.de/statistik.html">
+    <meta property="og:description" content="A simple HTML5 Template for new projects.">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        function requestData() {
+            $.ajax({
+                url: "getData.php",
+                dataType: "json",
+            }).done(function (jsonData) {
+                var schlecht = 0;
+                for (var i = 0; i < jsonData.length; i++) {
+                    if (jsonData[i].bewertung == "schlecht") {
+                        schlecht++;
+                    }
+                }
+                var lostMoney = schlecht * 3.50;
+                document.getElementById("lostMoney").innerHTML = "Es wurden erfolgreich " + lostMoney.toFixed(2) + "€ verloren";
+                var bigMacs = schlecht / 3.69;
+                document.getElementById("bigMacs").innerHTML = "Es hätten " + bigMacs.toFixed(2) + " Big Macs gekauft werden können";
+                var usedMoney = 0;
+                for (var i = 0; i < jsonData.length; i++) {
+                    if (jsonData[i].bewertung == "mittel" || jsonData[i].bewertung == "gut") {
+                        usedMoney++;
+                    }
+                }
+                document.getElementById("usedMoney").innerHTML = "Es wurden erfolgreich " + usedMoney + "€ gut genutzt";
+                var chickenNuggets = usedMoney / 0.66;
+                document.getElementById("chickenNuggets").innerHTML = "Es hätten auch " + chickenNuggets.toFixed(2) + " Chicken Nuggets gekauft werden können";
+
+                var totalMoney = jsonData.length * 3.50;
+                $.ajax({
+                    url: "https://api.coindesk.com/v1/bpi/currentprice.json",
+                    dataType: "json",
+                }).done(function (jsonData) {
+                    var bitcoin = jsonData.bpi.EUR.rate_float;
+                    var bitcoins = totalMoney / bitcoin;
+                    document.getElementById("bitcoins").innerHTML = "Es hätten " + bitcoins.toFixed(10) + " Bitcoins eingekauft werden können";
+                });
+            }).fail(function (jq, text, err) {
+                console.log(text + ' - ' + err);
+            });
+        }
+        requestData()
+        setInterval(requestData, 30000);
+    </script>
+</head>
+
+<body>
+    <div id="lostMoney"></div>
+    <div id="bigMacs"></div>
+    <div id="usedMoney"></div>
+    <div id="chickenNuggets"></div>
+    <div id="bitcoins"></div>
+</body>
+
+</html>
