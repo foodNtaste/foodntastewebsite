@@ -28,12 +28,22 @@
                         schlecht++;
                     }
                 }
-                var usedMoney = 0;
+
+                var mittel = 0;
                 for (var i = 0; i < jsonData.length; i++) {
                     if (jsonData[i].bewertung == "mittel" || jsonData[i].bewertung == "gut") {
-                        usedMoney++;
+                        mittel++;
                     }
                 }
+
+                var gut = 0;
+                for (var i = 0; i < jsonData.length; i++) {
+                    if (jsonData[i].bewertung == "gut") {
+                        gut++;
+                    }
+                }
+
+                var usedMoney = (gut + mittel) * 3.50;
                 var lostMoney = schlecht * 3.50;
                 var bigMacs = (schlecht * 3.50) / 3.69;
                 var chickenNuggets = usedMoney / 0.66;
@@ -70,6 +80,21 @@
                     document.getElementById("progressBar").value = jsonData.length;
                     document.getElementById("progressText").innerHTML = jsonData.length + "/50";
                 }
+                var procent = (gut / 193100000000) * 100;
+                document.getElementById("prozent").innerHTML = procent.toFixed(10) + "%";
+            }).fail(function (jq, text, err) {
+                console.log(text + ' - ' + err);
+            });
+            $.ajax({
+                url: "https://api.github.com/repos/foodNtaste/foodntastewebsite/commits",
+                dataType: "json",
+            }).done(function (jsonData) {
+                var commits = jsonData.length;
+                document.getElementById("commits").innerHTML = "Wir haben insgesamt " + commits + " Commits zum Repository gemacht.";
+                var lastCommit = jsonData[0];
+                var lastCommitDate = new Date(lastCommit.commit.author.date);
+                var lastCommitDateString = lastCommitDate.getDate() + "." + (lastCommitDate.getMonth() + 1) + "." + lastCommitDate.getFullYear();
+                document.getElementById("lastCommit").innerHTML = "Letzter Commit: " + lastCommit.commit.author.name + " am " + lastCommitDateString;
             }).fail(function (jq, text, err) {
                 console.log(text + ' - ' + err);
             });
@@ -82,21 +107,28 @@
 <body>
     <h1>Statistiken des foodNtaste Projektes</h1>
     <h2>Statistiken welche aus Projektmaterial generiert werden.</h2>
-    <h3>Wie viel Geld wurden verloren?</h3>
+    <h3>Datenbezogene Statistiken</h3>
+    <h4>Wie viel Geld wurden verloren?</h4>
     <div id="lostMoney"></div>
-    <h3>Wie viele Big Macs könnten mit diesem Geld gekauft werden?</h3>
+    <h4>Wie viele Big Macs könnten mit diesem Geld gekauft werden?</h4>
     <div id="bigMacs"></div>
-    <h3>Wie viel Geld wurden gut/mittelmäßig genutzt?</h3>
+    <h4>Wie viel Geld wurden gut/mittelmäßig genutzt?</h4>
     <div id="usedMoney"></div>
-    <h3>Wie viele Chicken Nuggets könnten mit diesem Geld gekauft werden?</h3>
+    <h4>Wie viele Chicken Nuggets könnten mit diesem Geld gekauft werden?</h4>
     <div id="chickenNuggets"></div>
+    <h4>Wie viel Prozent von Jeff Bezos Geld wurden für gutes Essen genutzt?</h4>
+    <div id="prozent"></div>
     <br>
-    <h3>Wie viele Bitcoins hätte man ohne essen kaufen können?</h3>
+    <h4>Wie viele Bitcoins hätte man ohne essen kaufen können?</h4>
     <div id="bitcoins"></div>
     <br>
-    <h3>Meilenstein</h3>
+    <h4>Meilenstein</h4>
     <div id="progress"></div>
     <div id="progressText"></div>
+    <br>
+    <h3>GitHub Statistiken</h3>
+    <div id="commits"></div>
+    <div id="lastCommit"></div>
 </body>
 
 </html>
