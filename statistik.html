@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>foodNtaste Statistiken</title>
+    <title>foodNtaste | Statistiken</title>
     <meta name="description" content="Statistiken welche aus Projektmaterial generiert werden.">
     <meta name="author" content="Luiggi33">
 
@@ -35,7 +35,7 @@
                     }
                 }
                 var lostMoney = schlecht * 3.50;
-                var bigMacs = schlecht / 3.69;
+                var bigMacs = (schlecht * 3.50) / 3.69;
                 var chickenNuggets = usedMoney / 0.66;
                 var totalMoney = jsonData.length * 3.50;
 
@@ -59,6 +59,17 @@
                     img.style.height = "50px";
                     document.getElementById("chickenNuggets").appendChild(img);
                 }
+                if (document.getElementById("progressBar") == null) {
+                    var progressBar = document.createElement("progress");
+                    progressBar.id = "progressBar";
+                    progressBar.max = 50;
+                    progressBar.value = jsonData.length;
+                    document.getElementById("progress").appendChild(progressBar);
+                    document.getElementById("progressText").innerHTML = jsonData.length + "/50";
+                } else {
+                    document.getElementById("progressBar").value = jsonData.length;
+                    document.getElementById("progressText").innerHTML = jsonData.length + "/50";
+                }
             }).fail(function (jq, text, err) {
                 console.log(text + ' - ' + err);
             });
@@ -69,12 +80,23 @@
 </head>
 
 <body>
+    <h1>Statistiken des foodNtaste Projektes</h1>
+    <h2>Statistiken welche aus Projektmaterial generiert werden.</h2>
+    <h3>Wie viel Geld wurden verloren?</h3>
     <div id="lostMoney"></div>
+    <h3>Wie viele Big Macs könnten mit diesem Geld gekauft werden?</h3>
     <div id="bigMacs"></div>
+    <h3>Wie viel Geld wurden gut/mittelmäßig genutzt?</h3>
     <div id="usedMoney"></div>
+    <h3>Wie viele Chicken Nuggets könnten mit diesem Geld gekauft werden?</h3>
     <div id="chickenNuggets"></div>
     <br>
+    <h3>Wie viele Bitcoins hätte man ohne essen kaufen können?</h3>
     <div id="bitcoins"></div>
+    <br>
+    <h3>Meilenstein</h3>
+    <div id="progress"></div>
+    <div id="progressText"></div>
 </body>
 
 </html>
