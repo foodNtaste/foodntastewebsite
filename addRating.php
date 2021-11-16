@@ -41,7 +41,42 @@
     if (!$result) {
         die("Database query failed.");
     }
-    print($result);
+    echo "<body style='background-color: #3b4d61;'>";
+    echo "<h1>Bewertung erfolgreich hinzugefügt</h1>";
+    echo "<h3>Deine Bewertung (" . $rating . ") wurde erfolgreich registriert.";
+    echo "</body>";
     // close connection
     mysqli_close($connection);
 ?>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Füge deine eigene Bewertung hinzu.">
+  <meta name="author" content="foodNtaste">
+  <meta property="og:title" content="foodNtaste" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://foodntaste.senfauge.de/" />
+  <title>foodNtaste | Essensbewertung</title>
+  <style>
+    html {overflow-y: scroll;}
+
+    body {
+      margin: 0;
+    }
+
+    h1 {
+      color: #ffd700;
+      text-align: center;
+      font-size: 40px;
+      font-family: Sans-Serif;
+    }
+
+    h3 {
+      color: inherit;
+      text-align: center;
+      font-size: 20px;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
