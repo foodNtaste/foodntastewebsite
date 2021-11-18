@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="de">
 
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Ein Schulprojekt für unsere Schule.">
   <meta name="author" content="foodNtaste">
-  <meta property="og:title" content="foodNtaste" />
+  <meta property="og:title" content="foodNtaste | Kurt stinkt" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://foodntaste.senfauge.de/" />
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-  <title>foodNtaste | Essensbewertung</title>
+  <title>foodNtaste | Kurt stinkt</title>
   <style>
     html {overflow-y: scroll;}
 
@@ -94,11 +94,9 @@
         data_today.addColumn('string', 'Bewertung');
         data_today.addColumn('number', 'bewertung');
 
-        // get todays date
         var today = new Date();
         var date = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 
-        // count ratings for each rating in jsondata if date is in the last 30 days add it to raintgs1 if its today add it to raitings2
         var ratings1 = {};
         var ratings2 = {};
         for (var i = 0; i < jsonData.length; i++) {
@@ -120,12 +118,16 @@
           }
         }
 
-        // add ratings to data
-        for (var rating in ratings1) {
-          data_30_days.addRow([rating, ratings1[rating]]);
+        var ratings = ['gut', 'mittel', 'schlecht'];
+        for (var i = 0; i < ratings.length; i++) {
+          if (ratings1[ratings[i]] != undefined) {
+            data_30_days.addRow([ratings[i], ratings1[ratings[i]]]);
+          }
         }
-        for (var rating in ratings2) {
-          data_today.addRow([rating, ratings2[rating]]);
+        for (var i = 0; i < ratings.length; i++) {
+          if (ratings2[ratings[i]] != undefined) {
+            data_today.addRow([ratings[i], ratings2[ratings[i]]]);
+          }
         }
 
         var chart_30_days = new google.visualization.PieChart(document.getElementById('chart_div_30_days'));
@@ -159,9 +161,7 @@
     AOS.init();
   </script>
 </body>
-
 <footer>
   <p class="text-center">Copyright &copy; foodNtaste | Version 0.6</p>
 </footer>
-
 </html>
