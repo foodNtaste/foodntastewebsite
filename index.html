@@ -95,50 +95,63 @@
               }
             }
 
-        var ratings = ['gut', 'mittel', 'schlecht'];
-        for (var i = 0; i < ratings.length; i++) {
-          if (ratings1[ratings[i]] != undefined) {
-            data_30_days.addRow([ratings[i], ratings1[ratings[i]]]);
-          }
-        }
-        for (var i = 0; i < ratings.length; i++) {
-          if (ratings2[ratings[i]] != undefined) {
-            data_today.addRow([ratings[i], ratings2[ratings[i]]]);
-          }
-        }
+            var ratings = ['gut', 'mittel', 'schlecht'];
+            for (var i = 0; i < ratings.length; i++) {
+              if (ratings1[ratings[i]] != undefined) {
+                data_30_days.addRow([ratings[i], ratings1[ratings[i]]]);
+              }
+            }
+            for (var i = 0; i < ratings.length; i++) {
+              if (ratings2[ratings[i]] != undefined) {
+                data_today.addRow([ratings[i], ratings2[ratings[i]]]);
+              }
+            }
 
-        var chart_30_days = new google.visualization.PieChart(document.getElementById('chart_div_30_days'));
-        var chart_today = new google.visualization.PieChart(document.getElementById('chart_div_current_day'));
-        var options = {
-          title: 'Essensbewertung',
-          backgroundColor: '#3b4d61',
-          colors: ['green', 'yellow', 'red'],
-          width: 800,
-          height: 600,
-          pieSliceTextStyle: { color: 'black' }
-        };
-        chart_30_days.draw(data_30_days, options);
-        chart_today.draw(data_today, options);
-      }).fail(function (jq, text, err) {
-        console.log(text + ' - ' + err);
-      });
-    }
-    setInterval(drawChart, 30000);
-  </script>
-</head>
+            var chart_30_days = new google.visualization.PieChart(
+              document.getElementById('chart_div_30_days')
+            );
+            var chart_today = new google.visualization.PieChart(
+              document.getElementById('chart_div_current_day')
+            );
+            var options = {
+              title: 'Essensbewertung',
+              backgroundColor: '#3b4d61',
+              colors: ['green', 'yellow', 'red'],
+              width: 800,
+              height: 600,
+              pieSliceTextStyle: { color: 'black' },
+            };
+            chart_30_days.draw(data_30_days, options);
+            chart_today.draw(data_today, options);
+          })
+          .fail(function (jq, text, err) {
+            console.log(text + ' - ' + err);
+          });
+      }
+      setInterval(drawChart, 30000);
+    </script>
+  </head>
 
-<body style="background-color: #3b4d61;">
-  <h1>Essensbewertung</h1>
-  <h2 data-aos="fade-up" data-aos-offset="200">Bewertungen des Heutigen Tages</h2>
-  <div data-aos="fade-up" data-aos-offset="200" id="chart_div_current_day"></div>
-  <h2 data-aos="fade-up" data-aos-offset="200">Bewertungen der letzten 30 Tage</h2>
-  <div data-aos="fade-up" data-aos-offset="200" id="chart_div_30_days"></div>
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>
-    AOS.init();
-  </script>
-</body>
-<footer>
-  <p class="text-center">Copyright &copy; foodNtaste | Version 0.6</p>
-</footer>
+  <body style="background-color: #3b4d61">
+    <h1>Essensbewertung</h1>
+    <h2 data-aos="fade-up" data-aos-offset="200">
+      Bewertungen des Heutigen Tages
+    </h2>
+    <div
+      data-aos="fade-up"
+      data-aos-offset="200"
+      id="chart_div_current_day"
+    ></div>
+    <h2 data-aos="fade-up" data-aos-offset="200">
+      Bewertungen der letzten 30 Tage
+    </h2>
+    <div data-aos="fade-up" data-aos-offset="200" id="chart_div_30_days"></div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+  </body>
+  <footer>
+    <p class="text-center">Copyright &copy; foodNtaste | Version 0.6</p>
+  </footer>
 </html>
