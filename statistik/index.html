@@ -19,7 +19,7 @@
     <script>
         function requestData() {
             $.ajax({
-                url: "getData.php",
+                url: "../getData.php",
                 dataType: "json",
             }).done(function (jsonData) {
                 var schlecht = 0;
@@ -64,7 +64,7 @@
                 });
                 for (var i = 0; i < chickenNuggets; i++) {
                     var img = document.createElement("img");
-                    img.src = "img/chickenNugget.jpg";
+                    img.src = "../img/chickenNugget.jpg";
                     img.style.width = "50px";
                     img.style.height = "50px";
                     document.getElementById("chickenNuggets").appendChild(img);
